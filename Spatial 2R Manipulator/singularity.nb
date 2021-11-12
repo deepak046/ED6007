@@ -1,0 +1,820 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     26289,        812]
+NotebookOptionsPosition[     24502,        773]
+NotebookOutlinePosition[     24920,        789]
+CellTagsIndexPosition[     24877,        786]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["(4) Spatial 2-R Manipulator", "Title",
+ CellChangeTimes->{{3.839505368456956*^9, 3.839505378527422*^9}},
+ Background->RGBColor[
+  1, 0.9, 0.8],ExpressionUUID->"8233782e-0dc5-4cdb-82ea-49a5530c2fc3"],
+
+Cell["Setting notebook directory ", "Text",
+ CellChangeTimes->{{3.8395348975404353`*^9, 
+  3.839534898102841*^9}},ExpressionUUID->"bc81efcb-d7b6-42eb-a3e5-\
+e3e6e4b6b462"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetSetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], ";"}]], "Code",
+ CellChangeTimes->{{3.8395348643275537`*^9, 
+  3.839534887667742*^9}},ExpressionUUID->"121c4fb1-68d0-4c12-b807-\
+26f91f4f5f0f"],
+
+Cell["Including package \[OpenCurlyQuote]planar2R_utils\[CloseCurlyQuote] ", \
+"Text",
+ CellChangeTimes->{
+  3.8395349040389833`*^9},ExpressionUUID->"c17db397-d1e1-4258-8dc9-\
+caf64d879d8a"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"<<", " ", "\"\<planar2R_utils.m\>\""}], ";"}]], "Code",
+ CellChangeTimes->{
+  3.839534913989661*^9},ExpressionUUID->"636945f6-ce3c-4aea-80e6-\
+9a8aa9693713"],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+(a) All possible Singular Configurations of the 2-R Manipulator\
+\>", "Chapter",
+ CellChangeTimes->{{3.839505503922*^9, 3.83950552668773*^9}},
+ Background->GrayLevel[
+  0.85],ExpressionUUID->"69248688-6727-4057-b090-f13d012547a1"],
+
+Cell["\<\
+The workspace area that is reachable by the spatial 2-R manipulator is the \
+surface area of a Torus. 
+At any point on the surface of this torus, the spatial 2-R manipulator can \
+move only tangential to the surface and not radially outward. So, there are \
+no 2 degrees of freedom at the boundary of the workspace surface area of the \
+Manipulator, which is a Torus.
+\
+\>", "Text",
+ CellChangeTimes->{{3.8395113632431087`*^9, 3.8395115116168413`*^9}, {
+  3.839511805948464*^9, 
+  3.8395118609450955`*^9}},ExpressionUUID->"8b14bb8d-bd6c-46c4-8751-\
+b8819508e159"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["(b) Workspace of the manipulator in a geometric sense", "Chapter",
+ CellChangeTimes->{{3.839511875789283*^9, 3.839511891505729*^9}, {
+  3.839511944524469*^9, 3.8395119521500015`*^9}},
+ Background->GrayLevel[
+  0.85],ExpressionUUID->"af863ec0-4c66-4847-8797-3c4d1a71ef7c"],
+
+Cell[TextData[{
+ "The workspace of the spatial 2R serial manipulator is a torus and this can \
+geometrically described. \n\n\[Theta] generally doesn\[CloseCurlyQuote]t \
+belong to R, rather, it belongs to the set { \[PlusMinus]2 n \[Pi] + \
+\[Theta]} for any n \[Element] ",
+ Cell[BoxData[
+  FormBox[
+   SuperscriptBox["Z", "+"], TraditionalForm]],
+  FormatType->TraditionalForm,ExpressionUUID->
+  "43f45d56-e408-4b0f-96ac-d235c7e37f96"],
+ " (natural numbers). This means that in this case, where, the output space \
+is (\[Theta]1, \[Theta]2) in the aspect of Inverse Kinematics Analysis, we \
+get  \[Theta] \[Element] S\[CloseCurlyQuote] and this leads to the fact that \
+the output space (\[Theta]1, \[Theta]2) \[Element] S\[CloseCurlyQuote] x S\
+\[CloseCurlyQuote] (where we take the cartesian product). This means that our \
+workspace is characterized by a toroidal surface and not just a sphere or a \
+circle. \n\nAll the points on the surface of the torus seems to behave like a \
+singular point because the link can only move tangentially at all points in \
+its reachable workspace. "
+}], "Text",
+ CellChangeTimes->{{3.839511965553067*^9, 3.839512015954651*^9}, {
+  3.839512080365831*^9, 3.8395121060550833`*^9}, {3.8395323798709507`*^9, 
+  3.839532421292925*^9}, {3.839532456422266*^9, 
+  3.839532851538171*^9}},ExpressionUUID->"ebb11a1d-bbb7-440f-b1fe-\
+e76a907f36ea"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["(c) Singularity Conditions of the Manipulator", "Chapter",
+ CellChangeTimes->{{3.839512249727683*^9, 3.839512266332713*^9}},
+ Background->GrayLevel[
+  0.85],ExpressionUUID->"87c5a992-2b2a-42d4-9a07-d588e795537e"],
+
+Cell[CellGroupData[{
+
+Cell["Forward Kinematics Analysis for spatial 2-R", "Section",
+ CellChangeTimes->{3.839532345841428*^9},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"33dfcaf7-f006-4917-be7b-9feb957bde1c"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Vectors", " ", 
+    FormBox[
+     OverscriptBox[
+      RowBox[{"p", " "}], "_"],
+     TraditionalForm]}], " ", ",", " ", 
+   RowBox[{
+    FormBox[
+     OverscriptBox["l1", "_"],
+     TraditionalForm], "  ", "and", " ", 
+    FormBox[
+     OverscriptBox["l2", "_"],
+     TraditionalForm], " ", "can", " ", "be", " ", "written", " ", "as"}], 
+   ",", "\n", 
+   RowBox[{
+    FormBox[
+     RowBox[{"\[LongRightArrow]", "    ", 
+      OverscriptBox[
+       RowBox[{" ", "p", " "}], "_"], " "}],
+     TraditionalForm], "=", "  ", 
+    RowBox[{
+     RowBox[{"[", 
+      RowBox[{"x", ",", " ", "y", ",", " ", "z"}], "]"}], 
+     FormBox[
+      SuperscriptBox["", "T"],
+      TraditionalForm]}]}]}], " "}], "\n", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[LongRightArrow]", "    ", 
+    FormBox[
+     OverscriptBox["l1", "_"],
+     TraditionalForm]}], " ", "=", " ", 
+   RowBox[{
+    RowBox[{"l1", " ", "[", 
+     RowBox[{"c1", ",", " ", "s1", ",", " ", "0"}], "]"}], 
+    FormBox[
+     SuperscriptBox["", "T"],
+     TraditionalForm]}]}], " "}], "\n", 
+ RowBox[{
+  RowBox[{
+   FormBox[
+    RowBox[{"\[LongRightArrow]", "    ", 
+     OverscriptBox["l2", "_"]}],
+    TraditionalForm], " ", "=", " ", 
+   RowBox[{
+    RowBox[{"l2", " ", "[", 
+     RowBox[{"c2c1", ",", " ", "c2s1", ",", " ", "s2"}], "]"}], 
+    FormBox[
+     SuperscriptBox["", "T"],
+     TraditionalForm]}]}], " "}], "\n", 
+ RowBox[{
+  RowBox[{"From", " ", "loop", " ", "closure"}], ",", " ", 
+  RowBox[{"we", " ", "get"}], ",", "\n", 
+  RowBox[{
+   FormBox[
+    RowBox[{"\[LongRightArrow]", "            ", 
+     OverscriptBox[
+      RowBox[{"p", " "}], "_"], " "}],
+    TraditionalForm], "=", " ", 
+   RowBox[{
+    FormBox[
+     OverscriptBox["l1", "_"],
+     TraditionalForm], " ", "+", " ", 
+    FormBox[
+     OverscriptBox["l2", "_"],
+     TraditionalForm]}]}]}], "\n", 
+ RowBox[{"So", ",", " ", "\n", 
+  RowBox[{
+   RowBox[{"\[LongRightArrow]", "\t    ", "x"}], " ", "=", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"l1", " ", "c1"}], " ", "+", " ", 
+     RowBox[{"l2", " ", "c2", " ", "c1"}]}], " ", "=", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{"l1", "+", 
+       RowBox[{"l2", " ", "c2"}]}], ")"}], " ", "c1"}]}]}]}], "\n", 
+ RowBox[{
+  RowBox[{"\[LongRightArrow]", "        ", "y"}], " ", "=", " ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"l1", " ", "s1"}], " ", "+", " ", 
+    RowBox[{"l2", " ", "c2", " ", "s1"}]}], " ", "=", " ", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"l1", "+", 
+      RowBox[{"l2", " ", "c2"}]}], ")"}], " ", "s1"}]}]}], "\n", 
+ RowBox[{
+  RowBox[{"\[LongRightArrow]", "        ", "z"}], " ", "=", " ", 
+  RowBox[{"l2", " ", "s2"}]}], "\n", 
+ RowBox[{
+  RowBox[{"Thus", " ", "we", " ", "get", " ", 
+   OverscriptBox[
+    RowBox[{"p", " "}], "_"]}], " ", "=", " ", 
+  RowBox[{
+   RowBox[{"[", 
+    RowBox[{"x", ",", " ", "y", ",", " ", "z"}], "]"}], 
+   FormBox[
+    SuperscriptBox["", "T"],
+    TraditionalForm], " ", "and", " ", "complete", " ", "our", " ", "forward",
+    " ", "Kinematic", " ", "analysis"}]}]}], "Text",
+ CellChangeTimes->{{3.8395323015697546`*^9, 3.839532305404333*^9}, {
+  3.8395330132213993`*^9, 
+  3.839533013377212*^9}},ExpressionUUID->"53cc81f8-013f-4104-af5a-\
+4d77450d5541"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Inverse Kinematics Analysis for spatial 2-R", "Section",
+ CellChangeTimes->{3.8395323350843*^9},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"fe2ff9e2-5e69-4457-897a-c0d1399cb520"],
+
+Cell[BoxData[{
+ StyleBox[
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "The", " ", "last", " ", "three", " ", "equations", " ", "from", " ", 
+     "the", " ", "previous", " ", "section", " ", "gives", " ", "us", " ", 
+     "the", " ", 
+     RowBox[{"coordinates", " ", "[", " ", 
+      RowBox[{"x", ",", "y", ",", "z"}], " ", "]"}], " ", "of", " ", "the", 
+     " ", "tip", " ", "of", " ", "the", " ", "end"}], "-", 
+    RowBox[{"effector", " ", "of", " ", "the", " ", "spatial", " ", "2"}], 
+    "-", 
+    RowBox[{"R", ".", "\n", "\n", "Now"}]}], ",", " ", 
+   RowBox[{
+   "using", " ", "the", " ", "equations", " ", "obtained", " ", "from", " ", 
+    "Forward", " ", "Kinematics"}], ",", " ", 
+   RowBox[{
+    RowBox[{
+    "we", " ", "can", " ", "obtain", " ", "the", " ", "solutions", " ", 
+     "\[Theta]1", " ", "and", " ", "\[Theta]2", " ", "for", " ", "the", " ", 
+     "given", " ", "coordinates", " ", "of", " ", "the", " ", "tip", " ", 
+     "of", " ", "the", " ", "end"}], "-", 
+    RowBox[{"effector", ".", "\n", "\n", "Now"}]}], ",", " ", 
+   RowBox[{
+   "from", " ", "the", " ", "last", " ", "three", " ", "equations", " ", "we",
+     " ", "can", " ", "get"}], ",", "\n", 
+   RowBox[{
+    RowBox[{"\[Rule]", "\t", 
+     RowBox[{
+      FormBox[
+       SuperscriptBox["x", "2"],
+       TraditionalForm], " ", "+", " ", 
+      FormBox[
+       SuperscriptBox["y", "2"],
+       TraditionalForm]}]}], " ", "=", " ", 
+    RowBox[{
+     FormBox[
+      SuperscriptBox[
+       RowBox[{"(", 
+        RowBox[{"l1", "+", 
+         RowBox[{"l2", " ", "c2"}]}], ")"}], "2"],
+      TraditionalForm], " ", "=", " ", 
+     FormBox[
+      SuperscriptBox["r", "2"],
+      TraditionalForm]}]}]}], "Text"], "\n", 
+ StyleBox[
+  RowBox[{
+   RowBox[{"\[Rule]", "\t", "where"}], ",", "  ", 
+   RowBox[{"r", " ", "=", " ", 
+    RowBox[{"l1", "+", 
+     RowBox[{"l2", " ", "c2"}]}]}]}], "Text"], "\n", 
+ StyleBox[
+  RowBox[{
+   RowBox[{
+    RowBox[{"In", " ", "the", " ", "above", " ", "equations"}], ",", " ", 
+    RowBox[{"r", " ", "can", " ", "be"}]}], " "}], "Text"], "\n", 
+ StyleBox[
+  RowBox[{"\[ShortRightArrow]", 
+   RowBox[{"(", " ", 
+    RowBox[{
+     RowBox[{"r", " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"+", " ", 
+         FormBox[
+          SqrtBox[
+           RowBox[{
+            SuperscriptBox["x", "2"], "+", 
+            SuperscriptBox["y", "2"]}]],
+          TraditionalForm]}], " ", "and", " ", "r"}], " ", "=", " ", 
+       RowBox[{
+        RowBox[{"-", 
+         FormBox[
+          SqrtBox[
+           RowBox[{
+            SuperscriptBox["x", "2"], "+", 
+            SuperscriptBox["y", "2"]}]],
+          TraditionalForm]}], "\[RightArrow]", " ", 
+        RowBox[{"Gives", " ", "us", " ", "one", " ", "solution", " ", 
+         RowBox[{"each", "."}]}], "\n", "\[ShortRightArrow]", 
+        RowBox[{"(", 
+         RowBox[{"r", " ", "=", " ", "0"}], ")"}], " ", "\[RightArrow]", " ", 
+        RowBox[{
+         RowBox[{
+         "Gives", " ", "us", " ", "a", " ", "single", " ", "solution", " ", 
+          RowBox[{"(", " ", 
+           RowBox[{
+            RowBox[{"where", " ", "the", " ", "end"}], "-", 
+            RowBox[{
+            "effector", " ", "tip", " ", "is", " ", "at", " ", "the", " ", 
+             "origin"}]}], ")"}]}], " ", "-", " ", 
+         RowBox[{
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{
+             RowBox[{
+             "this", " ", "depends", " ", "on", " ", "a", " ", "more", " ", 
+              "specific", " ", "condition", " ", "that", " ", "either", " ", 
+              "l1"}], " ", "=", " ", 
+             RowBox[{
+              RowBox[{"l2", " ", "and", " ", "\[Theta]2"}], " ", "=", " ", 
+              "\[Pi]"}]}], ",", " ", "or", ",", " ", 
+            RowBox[{"l2", " ", ">", " ", 
+             RowBox[{"l1", " ", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{
+                "so", " ", "that", " ", "the", " ", "point", " ", "can", " ", 
+                 "lie", " ", "on", " ", "z"}], "-", "axis"}], ")"}]}]}], ",", 
+            " ", 
+            RowBox[{
+             RowBox[{"otherwise", " ", "the", " ", "end"}], "-", 
+             RowBox[{
+              RowBox[{"effector", "'"}], "s", " ", "tip", " ", "cannot", " ", 
+              "reach", " ", "the", " ", "origin"}]}]}], ")"}], ".", " ", "\n",
+           "\n", "Then"}]}]}]}]}], ",", "\n", "\n", 
+     RowBox[{
+      RowBox[{"Let", " ", "X"}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        FormBox[
+         RowBox[{"r", " ", "=", 
+          SqrtBox[
+           RowBox[{
+            SuperscriptBox["x", "2"], "+", 
+            SuperscriptBox["y", "2"]}]]}],
+         TraditionalForm], " ", "and", " ", "Y"}], " ", "=", " ", 
+       RowBox[{"z", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"l2", " ", "sin", 
+          RowBox[{"(", "\[Theta]2", ")"}]}], "\n", "\n", "\[Rule]", " ", 
+         "For"}]}]}]}], ",", " ", 
+     RowBox[{"r", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"+", " ", 
+        FormBox[
+         SqrtBox[
+          RowBox[{
+           SuperscriptBox["x", "2"], "+", 
+           SuperscriptBox["y", "2"]}]],
+         TraditionalForm]}], " ", "=", " ", "X"}]}], ",", " ", 
+     RowBox[{
+      RowBox[{"we", " ", "get", "\n", "cos", 
+       RowBox[{"(", "\[Theta]2", ")"}]}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        FormBox[
+         FractionBox[
+          RowBox[{"X", "-", "l1"}], "l2"],
+         TraditionalForm], "  ", "and", " ", "sin", 
+        RowBox[{"(", "\[Theta]2", ")"}]}], " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         FormBox[
+          FractionBox["Y", "l2"],
+          TraditionalForm], "\n", "\t\t\t\t", 
+         StyleBox["\[Theta]2",
+          FontWeight->"Bold"]}], 
+        StyleBox[" ",
+         FontWeight->"Bold"], 
+        StyleBox["=",
+         FontWeight->"Bold"], 
+        StyleBox[" ",
+         FontWeight->"Bold"], 
+        RowBox[{
+         RowBox[{
+          StyleBox[
+           RowBox[{"ArcTan", "[", " ", 
+            RowBox[{
+             RowBox[{"X", " ", "-", " ", "l1"}], ",", " ", "Y"}], "]"}],
+           FontWeight->"Bold"], 
+          StyleBox["\n",
+           FontWeight->"Bold"], 
+          StyleBox["cos",
+           FontSize->16], 
+          StyleBox[
+           RowBox[{"(", "\[Theta]1", ")"}],
+           FontSize->16]}], 
+         StyleBox[" ",
+          FontSize->16], 
+         StyleBox["=",
+          FontSize->16], 
+         StyleBox[" ",
+          FontSize->16], 
+         RowBox[{
+          RowBox[{
+           FormBox[
+            FractionBox["x", "r"],
+            TraditionalForm], 
+           StyleBox["  ",
+            FontSize->16], 
+           StyleBox["and",
+            FontSize->16], 
+           StyleBox[" ",
+            FontSize->16], 
+           StyleBox["sin",
+            FontSize->16], 
+           StyleBox[
+            RowBox[{"(", "\[Theta]1", ")"}],
+            FontSize->16]}], 
+          StyleBox[" ",
+           FontSize->16], 
+          StyleBox["=",
+           FontSize->16], 
+          StyleBox[" ",
+           FontSize->16], 
+          RowBox[{
+           RowBox[{
+            FormBox[
+             FractionBox["y", "r"],
+             TraditionalForm], "\n", "\t\t\t\t", 
+            StyleBox["\[Theta]1",
+             FontSize->16,
+             FontWeight->"Bold"]}], 
+           StyleBox[" ",
+            FontWeight->"Bold"], 
+           StyleBox["=",
+            FontWeight->"Bold"], 
+           StyleBox[" ",
+            FontWeight->"Bold"], 
+           RowBox[{
+            RowBox[{
+             StyleBox[
+              RowBox[{"ArcTan", "[", 
+               RowBox[{"x", ",", "y"}], "]"}],
+              FontWeight->"Bold"], 
+             StyleBox["\n",
+              FontWeight->"Bold"], 
+             StyleBox["\n",
+              FontWeight->"Bold"], "\[Rule]", " ", 
+             RowBox[{"For", " ", "r"}]}], " ", "=", " ", 
+            RowBox[{
+             RowBox[{"-", " ", 
+              FormBox[
+               SqrtBox[
+                RowBox[{
+                 SuperscriptBox["x", "2"], "+", 
+                 SuperscriptBox["y", "2"]}]],
+               TraditionalForm]}], " ", "=", " ", "X"}]}]}]}]}]}]}]}], " ", 
+     ",", " ", 
+     RowBox[{
+      RowBox[{"we", " ", "get", "\n", "cos", 
+       RowBox[{"(", "\[Theta]2", ")"}]}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        FormBox[
+         FractionBox[
+          RowBox[{"X", "-", "l1"}], "l2"],
+         TraditionalForm], "  ", "and", " ", "sin", 
+        RowBox[{"(", "\[Theta]2", ")"}]}], " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         FormBox[
+          FractionBox["Y", "l2"],
+          TraditionalForm], "\n", "\t\t\t\t", 
+         StyleBox["\[Theta]2",
+          FontWeight->"Bold"]}], 
+        StyleBox[" ",
+         FontWeight->"Bold"], 
+        StyleBox["=",
+         FontWeight->"Bold"], 
+        StyleBox[" ",
+         FontWeight->"Bold"], 
+        RowBox[{
+         RowBox[{
+          StyleBox[
+           RowBox[{"ArcTan", "[", " ", 
+            RowBox[{
+             RowBox[{"X", " ", "-", " ", "l1"}], ",", " ", "Y"}], "]"}],
+           FontWeight->"Bold"], "\n", 
+          StyleBox["cos",
+           FontSize->16], 
+          StyleBox[
+           RowBox[{"(", "\[Theta]1", ")"}],
+           FontSize->16]}], 
+         StyleBox[" ",
+          FontSize->16], 
+         StyleBox["=",
+          FontSize->16], 
+         StyleBox[" ",
+          FontSize->16], 
+         RowBox[{
+          RowBox[{
+           FormBox[
+            FractionBox["x", "r"],
+            TraditionalForm], 
+           StyleBox["  ",
+            FontSize->16], 
+           StyleBox["and",
+            FontSize->16], 
+           StyleBox[" ",
+            FontSize->16], 
+           StyleBox["sin",
+            FontSize->16], 
+           StyleBox[
+            RowBox[{"(", "\[Theta]1", ")"}],
+            FontSize->16]}], 
+          StyleBox[" ",
+           FontSize->16], 
+          StyleBox["=",
+           FontSize->16], 
+          StyleBox[" ",
+           FontSize->16], 
+          RowBox[{
+           RowBox[{
+            FormBox[
+             FractionBox["y", "r"],
+             TraditionalForm], "\n", "\t\t\t\t", 
+            StyleBox["\[Theta]1",
+             FontSize->16,
+             FontWeight->"Bold"]}], 
+           StyleBox[" ",
+            FontWeight->"Bold"], 
+           StyleBox["=",
+            FontWeight->"Bold"], 
+           StyleBox[" ",
+            FontWeight->"Bold"], 
+           RowBox[{
+            RowBox[{
+             StyleBox[
+              RowBox[{"ArcTan", "[", 
+               RowBox[{"x", ",", "y"}], "]"}],
+              FontWeight->"Bold"], 
+             StyleBox["\n",
+              FontWeight->"Bold"], 
+             StyleBox["\t\t\t\t",
+              FontWeight->"Bold"], 
+             StyleBox["\n",
+              FontWeight->"Bold"], "\[Rule]", " ", 
+             RowBox[{"For", " ", "r"}]}], " ", "=", " ", 
+            RowBox[{"0", " ", "=", " ", "X"}]}]}]}]}]}]}]}], ",", " ", 
+     RowBox[{
+      RowBox[{"we", " ", "get", "\n", "cos", 
+       RowBox[{"(", "\[Theta]2", ")"}]}], " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        FormBox[
+         FractionBox[
+          RowBox[{"-", "l1"}], "l2"],
+         TraditionalForm], "  ", "and", " ", "sin", 
+        RowBox[{"(", "\[Theta]2", ")"}]}], " ", "=", " ", 
+       RowBox[{
+        RowBox[{
+         FormBox[
+          FractionBox["Y", "l2"],
+          TraditionalForm], "\t\t", "\n", "\t\t\t\t", 
+         StyleBox["\[Theta]2",
+          FontWeight->"Bold"]}], 
+        StyleBox[" ",
+         FontWeight->"Bold"], 
+        StyleBox["=",
+         FontWeight->"Bold"], 
+        StyleBox[" ",
+         FontWeight->"Bold"], 
+        RowBox[{
+         RowBox[{
+          StyleBox[
+           RowBox[{"ArcTan", "[", 
+            RowBox[{
+             RowBox[{"-", " ", "l1"}], ",", " ", "Y"}], "]"}],
+           FontWeight->"Bold"], "\n", 
+          StyleBox["cos",
+           FontSize->16], 
+          StyleBox[
+           RowBox[{"(", "\[Theta]1", ")"}],
+           FontSize->16]}], 
+         StyleBox[" ",
+          FontSize->16], 
+         StyleBox["=",
+          FontSize->16], 
+         StyleBox[" ",
+          FontSize->16], 
+         RowBox[{
+          RowBox[{
+           FormBox[
+            RowBox[{"0", "  "}],
+            TraditionalForm], 
+           StyleBox["and",
+            FontSize->16], 
+           StyleBox[" ",
+            FontSize->16], 
+           StyleBox["sin",
+            FontSize->16], 
+           StyleBox[
+            RowBox[{"(", "\[Theta]1", ")"}],
+            FontSize->16]}], 
+          StyleBox[" ",
+           FontSize->16], 
+          StyleBox["=",
+           FontSize->16], 
+          StyleBox[" ",
+           FontSize->16], 
+          RowBox[{
+           RowBox[{
+            FormBox[
+             FractionBox["y", "r"],
+             TraditionalForm], "\n", "\t\t\t\t", 
+            StyleBox["\[Theta]1",
+             FontSize->16,
+             FontWeight->"Bold"]}], 
+           StyleBox[" ",
+            FontWeight->"Bold"], 
+           StyleBox["=",
+            FontWeight->"Bold"], 
+           StyleBox[" ",
+            FontWeight->"Bold"], 
+           RowBox[{
+            RowBox[{
+             StyleBox[
+              RowBox[{"[", 
+               RowBox[{"0", ",", 
+                RowBox[{"2", "\[Pi]"}]}], "]"}],
+              FontWeight->"Bold"], 
+             StyleBox[" ",
+              FontWeight->"Bold"], 
+             StyleBox["\n",
+              FontWeight->"Bold"], 
+             StyleBox["\t\t\t\t",
+              FontWeight->"Bold"], 
+             StyleBox["\[Theta]1",
+              FontSize->16], " ", "in", " ", "this", " ", "case", " ", "has", 
+             " ", "multiple", " ", "solutions", 
+             StyleBox[" ",
+              FontWeight->"Bold"], "because", " ", "the", " ", "point", " ", 
+             "lies", " ", "on", " ", "z"}], "-", 
+            RowBox[{"axis", ".", 
+             StyleBox["\n",
+              FontWeight->"Bold"], "Thus"}]}]}]}]}]}]}]}], ",", " ", 
+     RowBox[{
+     "using", " ", "this", " ", "parametric", " ", "equation", " ", "on", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        StyleBox["\[Theta]1",
+         FontSize->16], ",", 
+        StyleBox["\[Theta]2",
+         FontSize->16]}], 
+       StyleBox[")",
+        FontSize->16]}], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["we",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["can",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["describe",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["the",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["workspace",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["of",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["the",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["manipulator",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["and",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["the",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["singularity",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["conditions",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["is",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["for",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["all",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["the",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["points",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["on",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["the",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["workspace",
+       FontSize->16], 
+      StyleBox[" ",
+       FontSize->16], 
+      StyleBox["surface",
+       FontSize->16]}]}]}]}], "Text"]}], "Text",
+ CellChangeTimes->{{3.839532279812234*^9, 3.839532279843471*^9}, 
+   3.8395323161986628`*^9, {3.839532867022002*^9, 
+   3.839532869485979*^9}},ExpressionUUID->"61eb3c8b-275d-4f0f-be9b-\
+f0487584281c"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{574.8, 609.6},
+WindowMargins->{{Automatic, -4.7999999999999545`}, {Automatic, 0}},
+FrontEndVersion->"12.3 for Microsoft Windows (64-bit) (July 9, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"5c336c27-a805-4443-a526-a7ecd6262cf6"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 204, 3, 114, "Title",ExpressionUUID->"8233782e-0dc5-4cdb-82ea-49a5530c2fc3"],
+Cell[787, 27, 171, 3, 35, "Text",ExpressionUUID->"bc81efcb-d7b6-42eb-a3e5-e3e6e4b6b462"],
+Cell[961, 32, 253, 6, 50, "Code",ExpressionUUID->"121c4fb1-68d0-4c12-b807-26f91f4f5f0f"],
+Cell[1217, 40, 190, 4, 35, "Text",ExpressionUUID->"c17db397-d1e1-4258-8dc9-caf64d879d8a"],
+Cell[1410, 46, 192, 5, 50, "Code",ExpressionUUID->"636945f6-ce3c-4aea-80e6-9a8aa9693713"],
+Cell[CellGroupData[{
+Cell[1627, 55, 240, 5, 181, "Chapter",ExpressionUUID->"69248688-6727-4057-b090-f13d012547a1"],
+Cell[1870, 62, 573, 12, 173, "Text",ExpressionUUID->"8b14bb8d-bd6c-46c4-8751-b8819508e159"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2480, 79, 277, 4, 133, "Chapter",ExpressionUUID->"af863ec0-4c66-4847-8797-3c4d1a71ef7c"],
+Cell[2760, 85, 1377, 24, 311, "Text",ExpressionUUID->"ebb11a1d-bbb7-440f-b1fe-e76a907f36ea"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4174, 114, 218, 3, 133, "Chapter",ExpressionUUID->"87c5a992-2b2a-42d4-9a07-d588e795537e"],
+Cell[CellGroupData[{
+Cell[4417, 121, 200, 3, 109, "Section",ExpressionUUID->"33dfcaf7-f006-4917-be7b-9feb957bde1c"],
+Cell[4620, 126, 3241, 106, 275, "Text",ExpressionUUID->"53cc81f8-013f-4104-af5a-4d77450d5541"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7898, 237, 198, 3, 71, "Section",ExpressionUUID->"fe2ff9e2-5e69-4457-897a-c0d1399cb520"],
+Cell[8099, 242, 16363, 526, 1130, "Text",ExpressionUUID->"61eb3c8b-275d-4f0f-be9b-f0487584281c"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
